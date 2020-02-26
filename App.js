@@ -23,7 +23,8 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-
+import VersionNumber from 'react-native-version-number';
+ 
 const App: () => React$Node = () => {
   return (
     <>
@@ -39,6 +40,19 @@ const App: () => React$Node = () => {
             </View>
           )}
           <View style={styles.body}>
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitle}>App Version</Text>
+              <Text style={styles.sectionDescription}>
+                {"App Version: " + VersionNumber.appVersion}
+              </Text>
+              <Text style={styles.sectionDescription}>
+                {"Build Version: " + VersionNumber.buildVersion}
+              </Text>
+              <Text style={styles.sectionDescription}>
+                {"Bundle Identifier: " + VersionNumber.bundleIdentifier}
+              </Text>
+            </View>
+
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Step One</Text>
               <Text style={styles.sectionDescription}>
