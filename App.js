@@ -25,7 +25,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import VersionNumber from 'react-native-version-number';
  
-const App: () => React$Node = () => {
+const App = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
