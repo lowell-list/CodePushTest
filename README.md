@@ -23,3 +23,7 @@
   - production
     - points to Prod BE
 - [ ] Add button with simple call to Journi BE according to environment
+- [ ] do a code push to the staging deployment environment
+    - use CLI: `appcenter login`, which uses webpage redirect to login
+    
+
