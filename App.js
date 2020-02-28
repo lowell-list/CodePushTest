@@ -25,6 +25,10 @@ const request = require('superagent-promise')(require('superagent'), Promise);
  * options: 'staging' | 'production'
  */
 const ENV = 'staging';
+const BASE_URL =
+  ENV === "production"
+    ? "https://charli-app-api.prd.janusplatform.io/charli-app"
+    : "https://charli-app-api.uat.janusplatform.io/charli-app"
 
 const App = () => {
   const createGraphQLQuery = query => {
@@ -60,10 +64,7 @@ const App = () => {
         quickSearchOptions: {},
       },
     };
-    const url =
-      ENV === 'staging'
-        ? 'https://charli-app-api.uat.janusplatform.io/charli-app/graphql'
-        : 'https://charli-app-api.prd.janusplatform.io/charli-app/graphql';
+    const url = BASE_URL + "/graphql"
 
     const body = createGraphQLQuery(enviornmentConfig);
     const test = request
@@ -102,6 +103,12 @@ const App = () => {
               </Text>
               <Text style={styles.sectionDescription}>
                 {'Bundle Identifier: ' + VersionNumber.bundleIdentifier}
+              </Text>
+              <Text style={styles.sectionDescription}>
+                {'Environment: ' + ENV}
+              </Text>
+              <Text style={styles.sectionDescription}>
+                {'Base URL: ' + BASE_URL}
               </Text>
               <Button title="Press me!" onPress={onButtonPress} />
             </View>
