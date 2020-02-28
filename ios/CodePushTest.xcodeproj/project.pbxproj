@@ -18,6 +18,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* CodePushTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CodePushTestTests.m */; };
 		59F7B16567661AF5ED3338F8 /* libPods-CodePushTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE981D6C89D28AB51BA28254 /* libPods-CodePushTest.a */; };
 		A5ECCC0043C351E84EC11D88 /* libPods-CodePushTest-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 14E1F58C857F12457D8FEC95 /* libPods-CodePushTest-tvOS.a */; };
+		C432F0EC24099A2100EA8DC6 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = C432F0EB24099A2000EA8DC6 /* AppCenter-Config.plist */; };
 		DEB102D30D14870F43364F99 /* libPods-CodePushTest-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4760AE29B413FEA956CB83F8 /* libPods-CodePushTest-tvOSTests.a */; };
 		EF392328A43E39F173476A2C /* libPods-CodePushTestTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EC5B94643C5E94692E679A32 /* libPods-CodePushTestTests.a */; };
 /* End PBXBuildFile section */
@@ -63,6 +64,7 @@
 		A9FD615061DB1E394706D1AF /* Pods-CodePushTest-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CodePushTest-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-CodePushTest-tvOSTests/Pods-CodePushTest-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ADDF85B70075BA28B6C59198 /* Pods-CodePushTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CodePushTest.release.xcconfig"; path = "Target Support Files/Pods-CodePushTest/Pods-CodePushTest.release.xcconfig"; sourceTree = "<group>"; };
 		AE981D6C89D28AB51BA28254 /* libPods-CodePushTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CodePushTest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C432F0EB24099A2000EA8DC6 /* AppCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AppCenter-Config.plist"; sourceTree = "<group>"; };
 		C7FA44A1461FD22D90DB761A /* Pods-CodePushTestTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CodePushTestTests.debug.xcconfig"; path = "Target Support Files/Pods-CodePushTestTests/Pods-CodePushTestTests.debug.xcconfig"; sourceTree = "<group>"; };
 		EC5B94643C5E94692E679A32 /* libPods-CodePushTestTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CodePushTestTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -125,6 +127,7 @@
 		13B07FAE1A68108700A75B9A /* CodePushTest */ = {
 			isa = PBXGroup;
 			children = (
+				C432F0EB24099A2000EA8DC6 /* AppCenter-Config.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -194,7 +197,6 @@
 				C7FA44A1461FD22D90DB761A /* Pods-CodePushTestTests.debug.xcconfig */,
 				20B829C195A85EAD0203E3DF /* Pods-CodePushTestTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -308,6 +310,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -338,6 +341,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				C432F0EC24099A2100EA8DC6 /* AppCenter-Config.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,6 +7,13 @@
 - [x] Create new React Native app for testing (CodePushTest)
 - [x] Create new GitHub repo: https://github.com/lowell-list/CodePushTest
 - [ ] Code-Pushify App
+    - `npm install appcenter appcenter-analytics appcenter-crashes --save-exact`
+    - `pod install` in `ios` dir
+    - create new files with app secret:
+        - `ios/AppCenter-Config.plist` and add it to Xcode project
+        - `android/app/src/main/assets/appcenter-config.json`
+    - modify `ios/CodePushTest/AppDelegate.m` per instructions
+    - modify `android/app/src/main/res/values/strings.xml` per instructions
 - [ ] Create 3 deployment environments:
     - staging
         * points to UAT BE
