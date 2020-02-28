@@ -8,6 +8,7 @@
 
 import React from 'react';
 import {
+  Button,
   SafeAreaView,
   StyleSheet,
   ScrollView,
@@ -16,13 +17,13 @@ import {
   StatusBar,
 } from 'react-native';
 
-import {
-  Header,
-  Colors,
-} from 'react-native/Libraries/NewAppScreen';
+import {Header, Colors} from 'react-native/Libraries/NewAppScreen';
 import VersionNumber from 'react-native-version-number';
- 
+
 const App = () => {
+  const onButtonPress = () => {
+    console.log('button pressed');
+  };
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -30,7 +31,6 @@ const App = () => {
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
-
           <Header />
 
           {global.HermesInternal == null ? null : (
@@ -40,20 +40,19 @@ const App = () => {
           )}
 
           <View style={styles.body}>
-
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Code Push Test App</Text>
               <Text style={styles.sectionDescription}>
-                {"Version: " + VersionNumber.appVersion}
+                {'Version: ' + VersionNumber.appVersion}
               </Text>
               <Text style={styles.sectionDescription}>
-                {"Build Number: " + VersionNumber.buildVersion}
+                {'Build Number: ' + VersionNumber.buildVersion}
               </Text>
               <Text style={styles.sectionDescription}>
-                {"Bundle Identifier: " + VersionNumber.bundleIdentifier}
+                {'Bundle Identifier: ' + VersionNumber.bundleIdentifier}
               </Text>
+              <Button title="Press me!" onPress={onButtonPress} />
             </View>
-
           </View>
         </ScrollView>
       </SafeAreaView>
