@@ -20,10 +20,47 @@ import {
 import {Header, Colors} from 'react-native/Libraries/NewAppScreen';
 import VersionNumber from 'react-native-version-number';
 
+/**
+ * options: 'staging' | 'production'
+ */
+const ENV = 'staging';
+
 const App = () => {
   const onButtonPress = () => {
-    console.log('button pressed!');
+    const enviornmentConfig = {
+      ENV,
+      cognito: {
+        userPoolId: 'us-west-2_zRrYIKPxb',
+        appClientId: '2eu8amtkjm6e9oo2l4colvj67',
+        config: 'default',
+      },
+      tealium: {},
+      pager: {
+        apiKeyAndroid: '1234',
+        apiKeyIos: '1234',
+      },
+      mpulse: {
+        appId: 'test',
+        accountId: '1234',
+      },
+      buildSupport: {
+        minimumIosVersion: 1,
+        minimumIosSemantic: 2,
+        minimumAndroidVersion: 3,
+        minimumAndroidSemantic: 4,
+      },
+      providerSearchConfig: {
+        quickSearchOptions: {},
+      },
+    };
+    const url =
+      ENV === 'staging'
+        ? 'https://charli-app-api.uat.janusplatform.io/charli-app/graphql'
+        : 'https://charli-app-api.prd.janusplatform.io/charli-app/graphql';
+
+    console.log('button pressed!', enviornmentConfig, url);
   };
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
