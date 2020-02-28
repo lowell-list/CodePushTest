@@ -32,6 +32,10 @@ const BASE_URL =
 
 const App = () => {
   const [serviceUrl, setServiceUrl] = React.useState('');
+
+  const doUrlsMatch = (base, service) => {
+    return base.localeCompare(service);
+  };
   const handleResponse = (res, url) => {
     setServiceUrl(url);
   };
@@ -108,8 +112,12 @@ const App = () => {
                 {'Base URL: ' + BASE_URL}
               </Text>
               <Button title="Press me!" onPress={onButtonPress} />
-              <Text style={styles.sectionDescription}>
-                {'Service URL: ' + serviceUrl}
+              <Text
+                style={{
+                  ...styles.sectionDescription,
+                  color: doUrlsMatch(BASE_URL, serviceUrl) ? 'green' : 'red',
+                }}>
+                {serviceUrl && 'Service URL: ' + serviceUrl}
               </Text>
             </View>
           </View>
