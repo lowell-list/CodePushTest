@@ -14,7 +14,7 @@
         - `android/app/src/main/assets/appcenter-config.json`
     - modify `ios/CodePushTest/AppDelegate.m` per instructions
     - modify `android/app/src/main/res/values/strings.xml` per instructions
-- [ ] Create 3 deployment environments:
+- [x] Create 3 deployment environments:
     - staging
         * points to UAT BE
     - production-test
@@ -22,5 +22,7 @@
     - production
         * points to Prod BE
 - [ ] Add button with simple call to Journi BE according to environment
-
+- [ ] do a code push to the staging deployment environment
+    - use CLI: `appcenter login`, which uses webpage redirect to login
+    
 
