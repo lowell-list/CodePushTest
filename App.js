@@ -19,6 +19,7 @@ import {
 
 import {Header, Colors} from 'react-native/Libraries/NewAppScreen';
 import VersionNumber from 'react-native-version-number';
+const request = require('superagent-promise')(require('superagent'), Promise);
 
 /**
  * options: 'staging' | 'production'
@@ -26,6 +27,12 @@ import VersionNumber from 'react-native-version-number';
 const ENV = 'staging';
 
 const App = () => {
+  const createGraphQLQuery = query => {
+    return {
+      query,
+    };
+  };
+
   const onButtonPress = () => {
     const enviornmentConfig = {
       ENV,
@@ -58,7 +65,15 @@ const App = () => {
         ? 'https://charli-app-api.uat.janusplatform.io/charli-app/graphql'
         : 'https://charli-app-api.prd.janusplatform.io/charli-app/graphql';
 
-    console.log('button pressed!', enviornmentConfig, url);
+    const body = createGraphQLQuery(enviornmentConfig);
+    const test = request
+      .post(url)
+      .send(body)
+      .type('application/json')
+      .accept('application/json')
+      .then(res => console.log(res, url))
+      .catch(res => console.log(res, url));
+    console.log('ayyy lmao', test);
   };
 
   return (
