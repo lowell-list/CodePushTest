@@ -18,6 +18,7 @@ import {
 } from 'react-native';
 
 import {Header, Colors} from 'react-native/Libraries/NewAppScreen';
+import CodePush from "react-native-code-push";
 import VersionNumber from 'react-native-version-number';
 const request = require('superagent-promise')(require('superagent'), Promise);
 
@@ -166,4 +167,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+const codePushOptions = {
+  checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME
+}
+const CodePushifiedApp = CodePush(codePushOptions)(App)
+
+export default CodePushifiedApp;
