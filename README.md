@@ -15,15 +15,16 @@
     - `android/app/src/main/assets/appcenter-config.json`
   - modify `ios/CodePushTest/AppDelegate.m` per instructions
   - modify `android/app/src/main/res/values/strings.xml` per instructions
-- [ ] Create 3 deployment environments:
-  - staging
-    - points to UAT BE
-  - production-test
-    - points to Prod BE
-  - production
-    - points to Prod BE
-- [ ] Add button with simple call to Journi BE according to environment
+- [x] Create 3 deployment environments:
+  - Staging
+    - point to UAT BE
+  - Production-Test
+    - point to Prod BE
+  - Production
+    - point to Prod BE
+- [x] Add button with simple call to Journi BE according to environment
+- [x] Add Staging deployment key to sample app
 - [ ] do a code push to the staging deployment environment
-    - use CLI: `appcenter login`, which uses webpage redirect to login
-    
+  - use CLI: `appcenter login`, which uses webpage redirect to login
+- [ ] setup code signing for iOS and Android (seems to be optional)
 
