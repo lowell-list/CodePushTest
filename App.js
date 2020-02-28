@@ -26,9 +26,9 @@ const request = require('superagent-promise')(require('superagent'), Promise);
  */
 const ENV = 'staging';
 const BASE_URL =
-  ENV === "production"
-    ? "https://charli-app-api.prd.janusplatform.io/charli-app"
-    : "https://charli-app-api.uat.janusplatform.io/charli-app"
+  ENV === 'production'
+    ? 'https://charli-app-api.prd.janusplatform.io/charli-app'
+    : 'https://charli-app-api.uat.janusplatform.io/charli-app';
 
 const App = () => {
   const createGraphQLQuery = query => {
@@ -38,33 +38,26 @@ const App = () => {
   };
 
   const onButtonPress = () => {
-    const enviornmentConfig = {
-      ENV,
-      cognito: {
-        userPoolId: 'us-west-2_zRrYIKPxb',
-        appClientId: '2eu8amtkjm6e9oo2l4colvj67',
-        config: 'default',
-      },
-      tealium: {},
-      pager: {
-        apiKeyAndroid: '1234',
-        apiKeyIos: '1234',
-      },
-      mpulse: {
-        appId: 'test',
-        accountId: '1234',
-      },
-      buildSupport: {
-        minimumIosVersion: 1,
-        minimumIosSemantic: 2,
-        minimumAndroidVersion: 3,
-        minimumAndroidSemantic: 4,
-      },
-      providerSearchConfig: {
-        quickSearchOptions: {},
-      },
-    };
-    const url = BASE_URL + "/graphql"
+    const enviornmentConfig = `
+      query {
+        environmentConfig {
+        janusEnvironmentName
+        cognito { appClientId userPoolId }
+        tealium { account profile environment endpoint ios android }
+        pager { apiKeyAndroid apiKeyIos }
+        mpulse { accountId }
+        buildSupport {
+          minimumIosVersion
+          minimumIosSemantic
+          minimumAndroidVersion
+          minimumAndroidSemantic
+        }
+      }
+      providerSearchConfig {
+        quickSearchOptions
+      }
+    }`;
+    const url = BASE_URL + '/graphql';
 
     const body = createGraphQLQuery(enviornmentConfig);
     const test = request
