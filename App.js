@@ -31,6 +31,15 @@ const BASE_URL =
     : 'https://charli-app-api.uat.janusplatform.io/charli-app';
 
 const App = () => {
+  const [serviceUrl, setServiceUrl] = React.useState('');
+
+  const doUrlsMatch = (base, service) => {
+    return base.localeCompare(service);
+  };
+  const handleResponse = (res, url) => {
+    setServiceUrl(url);
+  };
+
   const createGraphQLQuery = query => {
     return {
       query,
@@ -60,14 +69,13 @@ const App = () => {
     const url = BASE_URL + '/graphql';
 
     const body = createGraphQLQuery(enviornmentConfig);
-    const test = request
+    return request
       .post(url)
       .send(body)
       .type('application/json')
       .accept('application/json')
-      .then(res => console.log(res, url))
-      .catch(res => console.log(res, url));
-    console.log('ayyy lmao', test);
+      .then(res => handleResponse(res, url))
+      .catch(res => handleResponse(res, url));
   };
 
   return (
@@ -104,6 +112,13 @@ const App = () => {
                 {'Base URL: ' + BASE_URL}
               </Text>
               <Button title="Press me!" onPress={onButtonPress} />
+              <Text
+                style={{
+                  ...styles.sectionDescription,
+                  color: doUrlsMatch(BASE_URL, serviceUrl) ? 'green' : 'red',
+                }}>
+                {serviceUrl && 'Service URL: ' + serviceUrl}
+              </Text>
             </View>
           </View>
         </ScrollView>
