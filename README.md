@@ -14,4 +14,6 @@
         * points to Prod BE
     - production
         * points to Prod BE
+- [ ] Add button with simple call to Journi BE according to environment
+
 
