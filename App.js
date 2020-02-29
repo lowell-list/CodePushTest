@@ -32,7 +32,22 @@ const BASE_URL =
     : 'https://charli-app-api.uat.janusplatform.io/charli-app';
 
 const App = () => {
+  /**
+   * State
+   */
   const [serviceUrl, setServiceUrl] = React.useState('');
+  const [codePushLabel, setCodePushLabel] = React.useState('loading...');
+
+  /**
+   * Lifecycle Hooks
+   */
+  React.useEffect(() => {
+    CodePush.getUpdateMetadata().then((metadata) => {
+      setCodePushLabel(metadata.label);
+    });
+  }, []);
+
+
 
   const doUrlsMatch = (base, service) => {
     return base.localeCompare(service);
@@ -98,13 +113,16 @@ const App = () => {
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Code Push Test App</Text>
               <Text style={styles.sectionDescription}>
+                {'Bundle Identifier: ' + VersionNumber.bundleIdentifier}
+              </Text>
+              <Text style={styles.sectionDescription}>
                 {'Version: ' + VersionNumber.appVersion}
               </Text>
               <Text style={styles.sectionDescription}>
                 {'Build Number: ' + VersionNumber.buildVersion}
               </Text>
               <Text style={styles.sectionDescription}>
-                {'Bundle Identifier: ' + VersionNumber.bundleIdentifier}
+                {'CodePush Label: ' + codePushLabel}
               </Text>
               <Text style={styles.sectionDescription}>
                 {'Environment: ' + ENV}
@@ -112,7 +130,7 @@ const App = () => {
               <Text style={styles.sectionDescription}>
                 {'Base URL: ' + BASE_URL}
               </Text>
-              <Button title="Press me!" onPress={onButtonPress} />
+              <Button title="Query BE" onPress={onButtonPress} />
               <Text
                 style={{
                   ...styles.sectionDescription,
