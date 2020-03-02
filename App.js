@@ -59,7 +59,8 @@ const App = () => {
    */
   const getDeploymentLabel = (deploymentKey) => {
     const deploymentLabelMap = {
-      iGrJG1v_tgKgRsAnmchkGBo50puxi7gGJcMtI: "Staging",
+      iGrJG1v_tgKgRsAnmchkGBo50puxi7gGJcMtI: "iOS Staging",
+      Mccw3aGJoMcbx7fQbnsiFYExqsmuk6Y4XWEK8: "Android Staging",
       default: "Unknown"
     }
     return deploymentLabelMap[deploymentKey] || deploymentLabelMap.default
