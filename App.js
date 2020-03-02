@@ -44,6 +44,10 @@ const App = () => {
    */
   React.useEffect(() => {
     CodePush.getUpdateMetadata().then((metadata) => {
+      if(!metadata) {
+        console.warn("warning: metadata is not set")
+        return
+      }
       setCodePushLabel(metadata.label);
       setCodePushDeploymentKey(metadata.deploymentKey);
       console.log("CodePush Update Metadata:", metadata)
