@@ -185,6 +185,10 @@ class App extends React.Component {
             <View style={styles.body}>
 
               <View style={styles.sectionContainer}>
+                <Text style={styles.sectionTitle}>Change Me</Text>
+              </View>
+
+              <View style={styles.sectionContainer}>
                 <Text style={styles.sectionTitle}>App Info</Text>
                 <Text style={styles.sectionDescription}>
                   {'Bundle Identifier: ' + VersionNumber.bundleIdentifier}
