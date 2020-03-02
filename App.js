@@ -37,6 +37,7 @@ const App = () => {
    */
   const [serviceUrl, setServiceUrl] = React.useState('');
   const [codePushLabel, setCodePushLabel] = React.useState('loading...');
+  const [codePushDeploymentKey, setCodePushDeploymentKey] = React.useState('loading...');
 
   /**
    * Lifecycle Hooks
@@ -44,18 +45,27 @@ const App = () => {
   React.useEffect(() => {
     CodePush.getUpdateMetadata().then((metadata) => {
       setCodePushLabel(metadata.label);
+      setCodePushDeploymentKey(metadata.deploymentKey);
+      console.log("CodePush Update Metadata:", metadata)
     });
   }, []);
 
-
-
+  /**
+   * Methods
+   */
+  const getDeploymentLabel = (deploymentKey) => {
+    const deploymentLabelMap = {
+      iGrJG1v_tgKgRsAnmchkGBo50puxi7gGJcMtI: "Staging",
+      default: "Unknown"
+    }
+    return deploymentLabelMap[deploymentKey] || deploymentLabelMap.default
+  }
   const doUrlsMatch = (base, service) => {
     return base.localeCompare(service);
   };
   const handleResponse = (res, url) => {
     setServiceUrl(url);
   };
-
   const createGraphQLQuery = query => {
     return {
       query,
@@ -110,8 +120,9 @@ const App = () => {
           )}
 
           <View style={styles.body}>
+
             <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Code Push Test App</Text>
+              <Text style={styles.sectionTitle}>App Info</Text>
               <Text style={styles.sectionDescription}>
                 {'Bundle Identifier: ' + VersionNumber.bundleIdentifier}
               </Text>
@@ -121,9 +132,23 @@ const App = () => {
               <Text style={styles.sectionDescription}>
                 {'Build Number: ' + VersionNumber.buildVersion}
               </Text>
+            </View>
+
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitle}>Code Push</Text>
               <Text style={styles.sectionDescription}>
                 {'CodePush Label: ' + codePushLabel}
               </Text>
+              <Text style={styles.sectionDescription}>
+                {'CodePush Deployment Key: '
+                  + codePushDeploymentKey
+                  + " (" + getDeploymentLabel(codePushDeploymentKey) + ")"
+                }
+              </Text>
+            </View>
+
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitle}>Environment</Text>
               <Text style={styles.sectionDescription}>
                 {'Environment: ' + ENV}
               </Text>
@@ -139,6 +164,7 @@ const App = () => {
                 {serviceUrl && 'Service URL: ' + serviceUrl}
               </Text>
             </View>
+
           </View>
         </ScrollView>
       </SafeAreaView>
