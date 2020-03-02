@@ -103,8 +103,12 @@ class App extends React.Component {
 
   getDeploymentLabel(deploymentKey) {
     const deploymentLabelMap = {
-      iGrJG1v_tgKgRsAnmchkGBo50puxi7gGJcMtI: "iOS Staging",
-      Mccw3aGJoMcbx7fQbnsiFYExqsmuk6Y4XWEK8: "Android Staging",
+      "b1Tt9y6qpJFRQ8aq2kYchYJy40TQZvg85gNMt": "iOS Production",
+      "tBBpNCZevN08pnDsMt0PS_Q4WWHCnWpJcTRBQ": "iOS Production-Test",
+      "iGrJG1v_tgKgRsAnmchkGBo50puxi7gGJcMtI": "iOS Staging",
+      "rAYf54aQJ13x4Rbr78vDwL3zGKV8CxoCIiohk": "Android Production",
+      "89WEIh6AVhtDuZAXwjckqWqnd_Pzek8HP_MNA": "Android Production-Test",
+      "Mccw3aGJoMcbx7fQbnsiFYExqsmuk6Y4XWEK8": "Android Staging",
       default: "Unknown"
     }
     return deploymentLabelMap[deploymentKey] || deploymentLabelMap.default
