@@ -31,33 +31,77 @@ const BASE_URL =
     ? 'https://charli-app-api.prd.janusplatform.io/charli-app'
     : 'https://charli-app-api.uat.janusplatform.io/charli-app';
 
-const App = () => {
-  /**
-   * State
-   */
-  const [serviceUrl, setServiceUrl] = React.useState('');
-  const [codePushLabel, setCodePushLabel] = React.useState('loading...');
-  const [codePushDeploymentKey, setCodePushDeploymentKey] = React.useState('loading...');
+class App extends React.Component {
 
   /**
-   * Lifecycle Hooks
+   * Component Lifecycle
+   * --------------------------------------------------------------------------
    */
-  React.useEffect(() => {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      serviceUrl: "",
+      codePushLabel: "loading...",
+      codePushDeploymentKey: "loading...",
+      codePushStatus: "",
+      codePushDownloadProgress: "N/A"
+    }
+  }
+
+  componentDidMount() {
     CodePush.getUpdateMetadata().then((metadata) => {
       if(!metadata) {
         console.warn("warning: metadata is not set")
         return
       }
-      setCodePushLabel(metadata.label);
-      setCodePushDeploymentKey(metadata.deploymentKey);
+      this.setState({
+        codePushLabel: metadata.label,
+        codePushDeploymentKey: metadata.deploymentKey
+      })
       console.log("CodePush Update Metadata:", metadata)
     });
-  }, []);
+  }
 
   /**
-   * Methods
+   * CodePush Callbacks
+   * --------------------------------------------------------------------------
    */
-  const getDeploymentLabel = (deploymentKey) => {
+
+  codePushStatusDidChange(status) {
+    const statusMessageMap = {
+      [CodePush.SyncStatus.UP_TO_DATE]: "UP_TO_DATE",
+      [CodePush.SyncStatus.UPDATE_INSTALLED]: "UPDATE_INSTALLED",
+      [CodePush.SyncStatus.UPDATE_IGNORED]: "UPDATE_IGNORED",
+      [CodePush.SyncStatus.UNKNOWN_ERROR]: "UNKNOWN_ERROR",
+      [CodePush.SyncStatus.SYNC_IN_PROGRESS]: "SYNC_IN_PROGRESS",
+      [CodePush.SyncStatus.CHECKING_FOR_UPDATE]: "CHECKING_FOR_UPDATE",
+      [CodePush.SyncStatus.AWAITING_USER_ACTION]: "AWAITING_USER_ACTION",
+      [CodePush.SyncStatus.DOWNLOADING_PACKAGE]: "DOWNLOADING_PACKAGE",
+      [CodePush.SyncStatus.INSTALLING_UPDATE]: "INSTALLING_UPDATE",
+      default: "unknown state"
+    }
+    const codePushStatusString = statusMessageMap[status] || statusMessageMap.default
+    console.log("CodePush status changed to " + codePushStatusString)
+    this.setState({ codePushStatus: codePushStatusString })
+
+    if(!CodePush.SyncStatus.DOWNLOADING_PACKAGE) {
+      this.setState({ codePushDownloadProgress: "N/A" })
+    }
+  }
+  
+  codePushDownloadDidProgress(progress) {
+    const progressDescription = progress.receivedBytes + "/" + progress.totalBytes
+    this.setState({ codePushDownloadProgress: progressDescription })
+    console.log(progressDescription)
+  }
+  
+  /**
+   * Utility
+   * --------------------------------------------------------------------------
+   */
+
+  getDeploymentLabel(deploymentKey) {
     const deploymentLabelMap = {
       iGrJG1v_tgKgRsAnmchkGBo50puxi7gGJcMtI: "iOS Staging",
       Mccw3aGJoMcbx7fQbnsiFYExqsmuk6Y4XWEK8: "Android Staging",
@@ -65,19 +109,27 @@ const App = () => {
     }
     return deploymentLabelMap[deploymentKey] || deploymentLabelMap.default
   }
-  const doUrlsMatch = (base, service) => {
+
+  doUrlsMatch(base, service) {
     return base.localeCompare(service);
-  };
-  const handleResponse = (res, url) => {
-    setServiceUrl(url);
-  };
-  const createGraphQLQuery = query => {
+  }
+
+  handleResponse(res, url) {
+    this.setState({ serviceUrl: url })
+  }
+
+  createGraphQLQuery(query) {
     return {
       query,
     };
-  };
+  }
 
-  const onButtonPress = () => {
+  /**
+   * UI Handlers
+   * --------------------------------------------------------------------------
+   */
+
+  onButtonPress() {
     const enviornmentConfig = `
       query {
         environmentConfig {
@@ -99,83 +151,101 @@ const App = () => {
     }`;
     const url = BASE_URL + '/graphql';
 
-    const body = createGraphQLQuery(enviornmentConfig);
+    const body = this.createGraphQLQuery(enviornmentConfig);
     return request
       .post(url)
       .send(body)
       .type('application/json')
       .accept('application/json')
-      .then(res => handleResponse(res, url))
-      .catch(res => handleResponse(res, url));
-  };
+      .then(res => this.handleResponse(res, url))
+      .catch(res => this.handleResponse(res, url));
+  }
 
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
+  /**
+   * Render
+   * --------------------------------------------------------------------------
+   */
 
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
+  render() {
+    return (
+      <>
+        <StatusBar barStyle="dark-content" />
+        <SafeAreaView>
+          <ScrollView
+            contentInsetAdjustmentBehavior="automatic"
+            style={styles.scrollView}>
+            <Header />
+
+            {global.HermesInternal == null ? null : (
+              <View style={styles.engine}>
+                <Text style={styles.footer}>Engine: Hermes</Text>
+              </View>
+            )}
+
+            <View style={styles.body}>
+
+              <View style={styles.sectionContainer}>
+                <Text style={styles.sectionTitle}>App Info</Text>
+                <Text style={styles.sectionDescription}>
+                  {'Bundle Identifier: ' + VersionNumber.bundleIdentifier}
+                </Text>
+                <Text style={styles.sectionDescription}>
+                  {'Version: ' + VersionNumber.appVersion}
+                </Text>
+                <Text style={styles.sectionDescription}>
+                  {'Build Number: ' + VersionNumber.buildVersion}
+                </Text>
+              </View>
+
+              <View style={styles.sectionContainer}>
+                <Text style={styles.sectionTitle}>Code Push</Text>
+                <Text style={styles.sectionDescription}>
+                  {'CodePush Label: ' + this.state.codePushLabel}
+                </Text>
+                <Text style={styles.sectionDescription}>
+                  {'CodePush Deployment Key: '
+                    + this.state.codePushDeploymentKey
+                    + " (" + this.getDeploymentLabel(this.state.codePushDeploymentKey) + ")"
+                  }
+                </Text>
+                <Text style={styles.sectionDescription}>
+                  {'CodePush Status: ' + this.state.codePushStatus}
+                </Text>
+                <Text style={styles.sectionDescription}>
+                  {'CodePush Download Progress: ' + this.state.codePushDownloadProgress}
+                </Text>
+              </View>
+
+              <View style={styles.sectionContainer}>
+                <Text style={styles.sectionTitle}>Environment</Text>
+                <Text style={styles.sectionDescription}>
+                  {'Environment: ' + ENV}
+                </Text>
+                <Text style={styles.sectionDescription}>
+                  {'Base URL: ' + BASE_URL}
+                </Text>
+                <Button title="Query BE" onPress={() => this.onButtonPress()} />
+                <Text
+                  style={{
+                    ...styles.sectionDescription,
+                    color: this.doUrlsMatch(BASE_URL, this.state.serviceUrl) ? 'green' : 'red',
+                  }}>
+                  {this.state.serviceUrl && 'Service URL: ' + this.state.serviceUrl}
+                </Text>
+              </View>
+
             </View>
-          )}
+          </ScrollView>
+        </SafeAreaView>
+      </>
+    )
+  }
+}
 
-          <View style={styles.body}>
-
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>App Info</Text>
-              <Text style={styles.sectionDescription}>
-                {'Bundle Identifier: ' + VersionNumber.bundleIdentifier}
-              </Text>
-              <Text style={styles.sectionDescription}>
-                {'Version: ' + VersionNumber.appVersion}
-              </Text>
-              <Text style={styles.sectionDescription}>
-                {'Build Number: ' + VersionNumber.buildVersion}
-              </Text>
-            </View>
-
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Code Push</Text>
-              <Text style={styles.sectionDescription}>
-                {'CodePush Label: ' + codePushLabel}
-              </Text>
-              <Text style={styles.sectionDescription}>
-                {'CodePush Deployment Key: '
-                  + codePushDeploymentKey
-                  + " (" + getDeploymentLabel(codePushDeploymentKey) + ")"
-                }
-              </Text>
-            </View>
-
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Environment</Text>
-              <Text style={styles.sectionDescription}>
-                {'Environment: ' + ENV}
-              </Text>
-              <Text style={styles.sectionDescription}>
-                {'Base URL: ' + BASE_URL}
-              </Text>
-              <Button title="Query BE" onPress={onButtonPress} />
-              <Text
-                style={{
-                  ...styles.sectionDescription,
-                  color: doUrlsMatch(BASE_URL, serviceUrl) ? 'green' : 'red',
-                }}>
-                {serviceUrl && 'Service URL: ' + serviceUrl}
-              </Text>
-            </View>
-
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
-};
+/**
+ * Styles
+ * --------------------------------------------------------------------------
+ */
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -212,6 +282,11 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
 });
+
+/**
+ * CodePush magic
+ * --------------------------------------------------------------------------
+ */
 
 const codePushOptions = {
   checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME
